@@ -1,0 +1,24 @@
+<ion-content>
+  <!-- NAVBAR -->
+  <ion-toolbar>
+    <ion-title>{{ title }}</ion-title>
+  </ion-toolbar>
+
+  <!-- CONTENT -->
+  <section>
+    <h1>Iniciar Sesion</h1>
+    <ion-item>
+      <!-- LOGIN -->
+      <ion-input label="Email" type="email" placeholder="email@domain.com" [(ngModel)]="input_email"></ion-input>
+      <ion-input label="Contraseña" type="password" placeholder="****" [(ngModel)]="input_password"></ion-input>
+      <ion-button id="login" color="primary" (click)="login()">Iniciar Sesion</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-button (click)="autocompletar()">Autocompletar</ion-button>
+    </ion-item>
+  </section>
+
+  <!-- ALERT -->
+  <ion-alert trigger="login" header="{{ alert.message }}" [buttons]="alert.buttons"></ion-alert>
+
+</ion-content>
