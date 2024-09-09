@@ -50,7 +50,7 @@ o https://dl.google.com/android/repository/commandlinetools-win-11076708_latest.
 2. Descomprimir el archivo en la ruta C:\Users\USER_NAME\AppData\Android\SDK
 
 3. Crear directorio dentro del directorio commandlinetools llamada "tools"
-4. Mover todos los archivos del directorio commandlinetools la carpeta creada  "tools"
+4. Mover todos los archivos del directorio commandlinetools en la carpeta creada "tools"
 
 #### Generar 3 variables de entorno
 1. C:\Users\USER_NAME\AppData\Android\SDK\cmdline-tools\tools\bin
