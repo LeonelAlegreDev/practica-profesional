@@ -53,9 +53,9 @@ o https://dl.google.com/android/repository/commandlinetools-win-11076708_latest.
 4. Mover todos los archivos del directorio commandlinetools la carpeta creada  "tools"
 
 #### Generar 3 variables de entorno
-C:\Users\USER_NAME\AppData\Android\SDK\cmdline-tools\tools\bin
-C:\Users\User\AppData\Android\SDK\emulator
-C:\Users\User\AppData\Android\SDK\platform-tools
+1. C:\Users\USER_NAME\AppData\Android\SDK\cmdline-tools\tools\bin
+2. C:\Users\USER_NAME\AppData\Android\SDK\emulator
+3. C:\Users\USER_NAME\AppData\Android\SDK\platform-tools
 
 #### Validar la instalación
 ```bash
@@ -95,4 +95,4 @@ cd android
 ```
 **Salida:** android/app/build/outputs/apk/debug/app-debug.apk
 
-> **Nota:** En sistemas operativos Linux se debe remplazar '\' por '/'.
+> **Nota:** En sistemas operativos Linux se debe remplazar '\\' por '/'.
