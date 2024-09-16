@@ -1,0 +1,62 @@
+<ion-content [fullscreen]="true">
+   <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <ion-card>
+      <!-- TITULO -->
+      <ion-card-header>
+         <ion-card-title class="ion-text-center"><h1 style="font-size: 1.5em;">Iniciar sesión</h1></ion-card-title>
+      </ion-card-header>
+
+      <!-- FORMULARIO DE REGISTRO -->
+      <form [formGroup]="form">
+        <!-- EMAIL -->
+        <ion-item
+          lines="none"
+          class="ion-margin-horizontal ion-margin-top"
+        >       
+          <ion-button slot="start" fill="clear" color="medium">
+            <ion-icon slot="icon-only" name="mail-outline"></ion-icon>
+          </ion-button>
+  
+          <ion-input 
+            labelPlacement="floating" 
+            type="email" formControlName="email" 
+            placeholder="Ingrese su email" 
+            [errorText]="form.get('email')!.hasError('email') ? 'Ingrese un email valido' : 'Ingrese un email valido'"
+          >
+            <div slot="label">Email <ion-text color="danger">*</ion-text></div>
+          </ion-input>
+  
+        </ion-item>
+  
+        <!-- PASSWORD -->
+        <ion-item class="ion-margin" lines="none">
+          <ion-button slot="start" fill="clear" color="medium">
+            <ion-icon slot="icon-only" name="key-outline"></ion-icon>
+          </ion-button>
+  
+          <ion-input
+            labelPlacement="floating"
+            [type]="isPwd ? 'text' : 'password'" 
+            placeholder="Ingrese su contraseña"
+            formControlName="password"
+            [errorText]="form.get('password')!.hasError('minlength') ? 'La contraseña debe tener al menos 6 caracteres' : 'La contraseña debe tener al menos 6 caracteres'"
+          >
+            <div slot="label">Contraseña<ion-text color="danger">*</ion-text></div>
+          </ion-input>
+  
+          <ion-button slot="end" fill="clear" color="medium" (click)="togglePwd()">
+            <ion-icon slot="icon-only" [name]="isPwd ? 'eye-off-outline': 'eye-outline'"></ion-icon>
+          </ion-button>
+        </ion-item>
+  
+        <!-- SEND BUTTON -->
+        <ion-item class="ion-margin" id="submit-item">
+          <ion-button (click)="Submit()" expand="block" size="large" id="submit" [strong]="true">
+            <ion-text>Iniciar sesión</ion-text>
+          </ion-button>
+        </ion-item>
+  
+      </form>
+    </ion-card>
+   </div>
+</ion-content>
