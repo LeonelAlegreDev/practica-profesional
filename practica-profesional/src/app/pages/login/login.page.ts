@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Form, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonItem, IonInput, IonText, IonButton, IonIcon, IonCardHeader, IonCardTitle } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonItem, IonInput, IonText, IonButton, IonIcon, IonCardHeader, IonCardTitle, IonGrid, IonRow, IonCol, IonFooter } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonCardTitle, IonCardHeader, IonIcon, IonButton, IonText, IonInput, IonItem, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [IonFooter, IonCol, IonRow, IonGrid, IonCardTitle, IonCardHeader, IonIcon, IonButton, IonText, IonInput, IonItem, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class LoginPage implements OnInit {
   form!: FormGroup;
