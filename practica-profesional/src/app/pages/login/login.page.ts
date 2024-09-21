@@ -42,7 +42,8 @@ export class LoginPage implements OnInit {
 
     try{
       await this.auth.Login(this.form.value.email, this.form.value.password);
-      console.log("Usuario logeado con id: ", this.auth.user);
+
+      console.log("Login: usuario logueado ", this.auth.user);
     } catch (error: any) {
       // Manejar error
       console.log("Error al iniciar sesion: ", error.message);

@@ -44,7 +44,10 @@ export class SignupPage implements OnInit {
 
     try {
       const res = await this.auth.Signup(this.form.value.email, this.form.value.password);
-      console.log("usuario creado con id: ", res);
+      if(res){
+        // TODO: Navegar a la página de inicio
+        console.log('Usuario creado con exito');
+      }
     } catch (error: any) {
       // TODO: Manejar error
       console.log("Error al crear usuario: ", error.message);
