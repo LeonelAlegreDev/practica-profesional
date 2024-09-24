@@ -1,40 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, addDoc, DocumentReference, CollectionReference } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, addDoc, doc, setDoc, getDoc, DocumentReference, CollectionReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { UserProfile } from '../interfaces/user-profile';
-import { user } from '@angular/fire/auth';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  users$: Observable<UserProfile[]>;
-  usersCollection: CollectionReference;
-  
-  constructor(private firestore: Firestore) { 
-    // get a reference to the user-profile collection
-    this.usersCollection = collection(this.firestore, 'users');
 
-    // get documents (data) from the collection using collectionData
-    this.users$ = collectionData(this.usersCollection) as Observable<UserProfile[]>;
+  constructor(private firestore: Firestore) { 
+
   }
 
-  async CreateUser(id: string, email: string, perfil: string, sexo: string) {
-    try {
-      const result = await addDoc(this.usersCollection, <UserProfile> { id, email, perfil, sexo });
-      // TODO: Crear documento con id custom
+  async CreateUser(user: UserProfile) {
+    try {      
+      // TODO: validar los campos del usuario
+      const usersCollection = collection(this.firestore, 'user_app_1');
+      const userRef = doc(usersCollection, user.id);
+      await setDoc(userRef, user);
 
+      console.log("Usuario creado con Firestore");
 
-      if (result instanceof DocumentReference && result.id) { 
-        return {
-          id: result.id,
-          email: email,
-          perfil: perfil,
-          sexo: sexo
-        };
-      }
-      else throw new Error('Error al crear usuario');
+      return user;
     }
     catch (error) {
       // TODO: manejar error
@@ -42,46 +29,28 @@ export class UserService {
     }
   }
 
-  async GetUser(id: string) {
+  GetUsers(): Observable<UserProfile[]> {
     try {      
-      // const usuario = await this.users$.subscribe(users => {
-      //   let userFound: any = null;
+      const usersCollection = collection(this.firestore, 'user_app_1');
+      return collectionData(usersCollection, { idField: 'id' }) as Observable<UserProfile[]>;
 
-      //   users.forEach((user: UserProfile) => {
-      //     if(user.id === id) {
-      //       userFound =  user;
-      //       return;
-      //     }
-      //   });
-
-      //   if(userFound) {
-      //     return userFound;
-      //   }
-      //   throw new Error('Usuario no encontrado');
-      // });
-
-      // TODO: Rehacer metodo
-
-      const result = await this.users$.pipe(
-        map(users => users.find(user => user.id === id))
-      );
-
-      console.log('Result:', result);
-
-      
-      const user = await result.subscribe(user => {
-        if (user) {
-          console.log('Found user:', user);
-
-          // You can use the user object here for further actions
-          return user;
-        } else {
-          console.log('User with ID', id, 'not found.');
-          throw new Error('User not found');
-        }
-      });
-      console.log('User:', user);
     } catch (error) {
+      throw error;
+    }
+  }
+
+  async GetUserById(id: string): Promise<UserProfile | null> {
+    try {
+      const usersCollection = collection(this.firestore, 'user_app_1');
+      const userRef = doc(usersCollection, id);
+      const userDoc = await getDoc(userRef);
+
+      if (userDoc.exists()) {
+        return userDoc.data() as UserProfile;
+      }
+      else throw new Error("Usuario no encontrado");
+    } catch (error) {
+      console.error("Error getting document: ", error);
       throw error;
     }
   }

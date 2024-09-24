@@ -1,3 +1,22 @@
 <ion-content [fullscreen]="true">
-  <h1>this is home</h1>
+  @if(authService.user){
+    <h1>Usuario logueado</h1>
+    <p>{{ authService.user }}</p>
+  }
+  @else {
+    <div id="unlogged_wrapper">
+      <div id="img_container">
+          <img src="assets/images/logo.png">
+      </div>
+      <div id="start_container">
+          <div id="text">
+              <h1>{{ appName }}</h1>
+              <p>{{ appSlogan }}</p>
+          </div>
+
+          <input id="start" type="button" routerLink="/signup" routerLinkActive="active-route">
+          <label for="start">Comenzá ahora</label>
+      </div>
+  </div>
+  }
 </ion-content>

@@ -53,12 +53,20 @@
       
             <!-- SEND BUTTON -->
             <ion-item class="ion-margin" id="submit-item" lines="none">
-              <ion-button (click)="Submit()" expand="block" size="large" id="submit" [strong]="true">
-                <ion-text>Iniciar sesión</ion-text>
-              </ion-button>
+              <button (click)="Submit()" expand="block" size="" id="submit">Iniciar sesión</button>
             </ion-item>
-      
+            <ion-text id="error-message">{{ errorMessage }}</ion-text>
           </form>
+          <!-- TODO: cambiar diseño del login para coincidir con el signup -->
+
+          <div id="signup">
+            <p>¿No tenés cuenta?</p>
+            <button routerLink="/signup" routerLinkActive="active-route">Crear cuenta</button>
+    
+            <p>Ó</p>
+            <!-- <button id="shortcut" (click)="Autocompletar()">Usar credencial automática</button> -->
+            <button id="shortcut">Usar credencial automática</button>
+          </div>
         </ion-card>
       </ion-col>
     </ion-row>

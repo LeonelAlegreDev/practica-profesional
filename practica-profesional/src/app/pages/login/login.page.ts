@@ -1,21 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Form, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonItem, IonInput, IonText, IonButton, IonIcon, IonCardHeader, IonCardTitle, IonGrid, IonRow, IonCol, IonFooter } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
+import { UserService } from 'src/app/services/user.service';
+import { Router, RouterLink } from '@angular/router';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonFooter, IonCol, IonRow, IonGrid, IonCardTitle, IonCardHeader, IonIcon, IonButton, IonText, IonInput, IonItem, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [IonFooter, IonCol, IonRow, IonGrid, IonCardTitle, IonCardHeader, IonIcon, IonButton, IonText, IonInput, IonItem, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule, RouterLink]
 })
 export class LoginPage implements OnInit {
+  private userService = inject(UserService);
+  public authService =  inject(AuthService);
+  private router = inject(Router);
+
   form!: FormGroup;
   isPwd = false;
-  loggedUser = '';
 
-  constructor(public auth: AuthService){
+  errorMessage = "";
+
+  constructor(){
     this.initForm();
   }
 
@@ -41,11 +49,23 @@ export class LoginPage implements OnInit {
     }
 
     try{
-      await this.auth.Login(this.form.value.email, this.form.value.password);
+      const userId = await this.authService.Login(this.form.value.email, this.form.value.password);
 
-      console.log("Login: usuario logueado ", this.auth.user);
+      if(userId && typeof 'string'){
+        const user = await this.userService.GetUserById(userId);
+
+        if(user && typeof user.id === 'string'){
+          this.authService.user = user;
+          console.log("Usuario autenticado: ", this.authService.user);
+
+          this.router.navigate(['/home']);
+        }
+        else throw new Error('No se encontro usuario');
+      }
+      else throw new Error('No se pudo iniciar sesión');
     } catch (error: any) {
       // Manejar error
+      this.errorMessage = error.message;
       console.log("Error al iniciar sesion: ", error.message);
     }
   }

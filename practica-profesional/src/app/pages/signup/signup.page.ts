@@ -2,8 +2,9 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Form, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonItem, IonButton, IonIcon, IonText, IonInput, IonCol, IonRow, IonGrid } from '@ionic/angular/standalone';
-import { createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -15,8 +16,12 @@ import { AuthService } from '../../services/auth.service';
 export class SignupPage implements OnInit {
   form!: FormGroup;
   isPwd = false;
+  errorMessage = "";
 
-  private auth: AuthService = inject(AuthService);
+  private authService: AuthService = inject(AuthService);
+  private userService: UserService = inject(UserService);
+  private router = inject(Router);
+
 
   constructor() {
     this.initForm();
@@ -43,13 +48,25 @@ export class SignupPage implements OnInit {
     }
 
     try {
-      const res = await this.auth.Signup(this.form.value.email, this.form.value.password);
-      if(res){
-        // TODO: Navegar a la página de inicio
-        console.log('Usuario creado con exito');
+      const res = await this.authService.Signup(this.form.value.email, this.form.value.password);
+      
+      if(res && typeof 'string'){
+        const userProfile = {
+          id: res,
+          email: this.form.value.email,
+          perfil: 'usuario',
+          sexo: 'masculino',
+        }   
+
+        const user = await this.userService.CreateUser(userProfile);
+        this.authService.user = user;
+
+        console.log("Cuenta creada con exito: ", user);
+
+        this.router.navigate(['/home']);
       }
     } catch (error: any) {
-      // TODO: Manejar error
+      this.errorMessage = error.message;
       console.log("Error al crear usuario: ", error.message);
     }
   }

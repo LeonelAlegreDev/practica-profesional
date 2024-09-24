@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createUserWithEmailAndPassword, Auth, signInWithEmailAndPassword, User } from '@angular/fire/auth';
 import { UserService } from './user.service';
+import { UserProfile } from '../interfaces/user-profile';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +9,7 @@ import { UserService } from './user.service';
 export class AuthService {
   private isLoggedIn: boolean = false;
   msjError: string = '';
-  user: any;
-
+  user: UserProfile | null = null;
 
   constructor(private auth: Auth, private userService: UserService) { }
 
@@ -22,14 +22,13 @@ export class AuthService {
     this.isLoggedIn = false;
   }
 
-  async Signup(email: string, password: string) : Promise<boolean> {
+  async Signup(email: string, password: string) : Promise<string> {
     try {
       const res = await createUserWithEmailAndPassword(this.auth, email, password);
-      const usr = await this.userService.CreateUser(res.user.uid, email, 'usuario', 'masculino',);
 
-      if (usr !== null && usr.id !== null) {
-        this.user = usr;
-        return true;
+      if (res.user.email !== null && res.user.uid !== null) {
+        console.log("Usuario creado con Fire Auth");
+        return res.user.uid;
       }
       else{
         throw new Error("Error al crear usuario");
@@ -56,17 +55,11 @@ export class AuthService {
 
       // Valida si el usuario autenticado tiene un email y un uid
       if (res.user.email !== null && res.user.uid !== null) {
-        // busca en la coleccion de firestore el usuario que contenga el campo id 
-        // igual al uid del usuario autenticado
-        const user = await this.userService.GetUser(res.user.uid);
-        
-        console.log("usuario encontrado: ", user);
-        console.log("tipo de dato: ", typeof user);
 
         // this.user = res.user.uid;
         this.isLoggedIn = true;
 
-
+        return res.user.uid;
       }
       else throw new Error("Error al iniciar sesion");      
     } catch(e: any){
